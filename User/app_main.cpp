@@ -121,6 +121,44 @@ extern "C" void app_main(void) {
   };
 
   /* User Code Begin 3 */
+  auto power_cmd_file = LibXR::RamFS::CreateFile<STM32PowerManager *>(
+      "power",
+      [](LibXR::STM32PowerManager *&power, int argc, char **argv) {
+        if (argc == 2) {
+          if (strcmp(argv[1], "reset") == 0) {
+            power->Reset();
+          } else if (strcmp(argv[1], "shutdown") == 0) {
+            power->Shutdown();
+          } else if (strcmp(argv[1], "bl") == 0) {
+            HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
+            HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
+
+            __set_PRIMASK(1);
+
+            SysTick->CTRL = 0;
+            SysTick->LOAD = 0;
+            SysTick->VAL = 0;
+
+            HAL_RCC_DeInit();
+
+            for (int i = 0; i < 8; i++) {
+              NVIC->ICER[i] = 0xFFFFFFFF;
+              NVIC->ICPR[i] = 0xFFFFFFFF;
+            }
+
+            __set_PRIMASK(0);
+
+            __set_MSP(*(__IO uint32_t *)0x1FFF0000);
+            void (*sys_mem_boot_jump)(void) =
+                (void (*)(void))(*((uint32_t *)0x1FFF0004));
+            sys_mem_boot_jump();
+          }
+        }
+        return 0;
+      },
+      &power_manager);
+
+  ramfs.Add(power_cmd_file);
   XRobotMain(peripherals);
   /* User Code End 3 */
 }
