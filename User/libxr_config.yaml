@@ -1,4 +1,4 @@
-terminal_source: ''
+terminal_source: usart2
 software_timer:
   priority: 2
   stack_depth: 512
