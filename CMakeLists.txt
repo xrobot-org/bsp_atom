@@ -70,3 +70,6 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 
 # Add LibXR
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/LibXR.CMake)
+
+# Add XRobot Modules
+include(${CMAKE_CURRENT_LIST_DIR}/Modules/CMakeLists.txt)
