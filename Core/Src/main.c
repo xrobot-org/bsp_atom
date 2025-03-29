@@ -76,7 +76,8 @@ void StartDefaultTask(void const * argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+__attribute__((section(".reboot_in_bootloader_section"), used)) static void
+bsp_reboot_in_bootloader(void);
 /* USER CODE END 0 */
 
 /**

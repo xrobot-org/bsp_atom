@@ -62,7 +62,7 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 MEMORY
 {
 RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 32K
-FLASH (rx)      : ORIGIN = 0x8000000, LENGTH = 128K
+FLASH (rx)      : ORIGIN = 0x8000000, LENGTH = 124K
 }
 
 /* Define output sections */
@@ -74,6 +74,11 @@ SECTIONS
     . = ALIGN(4);
     KEEP(*(.isr_vector)) /* Startup code */
     . = ALIGN(4);
+  } >FLASH
+
+  .reboot_in_bootloader_section 0x08000200:
+  {
+      KEEP(*(.reboot_in_bootloader_section))
   } >FLASH
 
   /* The program code and other data goes into FLASH */
