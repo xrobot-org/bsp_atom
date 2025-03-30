@@ -36,11 +36,11 @@ device_aliases:
   BMI088_CS_2:
     type: GPIO
     aliases:
-    - BMI088_CS_2
+    - bmi088_gyro_cs
   BMI088_INT_1:
     type: GPIO
     aliases:
-    - BMI088_INT_1
+    - bmi088_accl_int
   IMU_CS:
     type: GPIO
     aliases:
@@ -52,11 +52,11 @@ device_aliases:
   BMI088_CS_1:
     type: GPIO
     aliases:
-    - BMI088_CS_1
+    - bmi088_accl_cs
   BMI088_INT_2:
     type: GPIO
     aliases:
-    - BMI088_INT_2
+    - bmi088_gyro_int
   LED:
     type: GPIO
     aliases:
@@ -64,7 +64,7 @@ device_aliases:
   pwm_tim1_ch1:
     type: PWM
     aliases:
-    - pwm_tim1_ch1
+    - pwm_bmi088_heat
   pwm_tim2_ch2:
     type: PWM
     aliases:
@@ -76,7 +76,7 @@ device_aliases:
   spi3:
     type: SPI
     aliases:
-    - spi3
+    - spi_bmi088
   usart1:
     type: UART
     aliases:

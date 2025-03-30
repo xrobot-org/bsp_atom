@@ -4,3 +4,12 @@ modules:
 - name: BlinkLED
   constructor_args:
     blink_cycle: 250
+- name: BMI088
+  constructor_args:
+    rotation:
+      w: 1.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    gyro_topic_name: bmi088_gyro
+    accl_topic_name: bmi088_accl
