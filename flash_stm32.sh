@@ -1,19 +1,29 @@
-#!/bin/bash
-
 # ===============================================
 # STM32 Firmware Flash Script (Bash Version)
 # Requires: STM32_Programmer_CLI in user directory
 # ===============================================
 
 # Serial device and baud rate
-SERIAL_PORT="/dev/ttyCH343USB0"
+SERIAL_PORT="/dev/ttyACM0"
 BAUD_RATE=460800
 
 # Path to STM32CubeProgrammer CLI
 STM32_CLI="$HOME/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin/STM32_Programmer_CLI"
 
-# Path to firmware (can be ELF/BIN/HEX etc.)
-ELF_FILE="./build/xrobot.elf"
+# Firmware path (no extension)
+REAL_FILE="./build/Debug/atom"
+ELF_FILE="${REAL_FILE}.elf"
+
+# ===============================================
+# Step 0: Check and prepare firmware file
+# ===============================================
+if [ ! -f "$REAL_FILE" ]; then
+    echo "❌ Error: Firmware file not found at $REAL_FILE"
+    exit 1
+fi
+
+# Copy original file to .elf (required by STM32 CLI)
+cp -f "$REAL_FILE" "$ELF_FILE"
 
 # ===============================================
 # Step 1: Check if STM32 CLI is executable
@@ -41,11 +51,11 @@ stty -F "$SERIAL_PORT" $BAUD_RATE raw -echo
 # Step 4: Enter bootloader mode
 # ===============================================
 echo "🔄 Sending bootloader entry command to $SERIAL_PORT..."
-sleep 1
-echo -e "\n" >"$SERIAL_PORT"
-sleep 1
-echo -e "power bl\n" >"$SERIAL_PORT"
-sleep 3  # Wait for device to enter bootloader
+sleep 2
+echo -e "\r\n" >"$SERIAL_PORT"
+sleep 2
+echo -e "\r\npower bl\r\n" >"$SERIAL_PORT"
+sleep 3 # Wait for device to enter bootloader
 
 # ===============================================
 # Step 5: Flash the firmware
