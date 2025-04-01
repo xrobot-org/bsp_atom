@@ -4,7 +4,7 @@
 # ================================================
 
 # Serial port and baudrate
-$SerialPort = "COMx"
+$SerialPort = "COM6"
 $BaudRate = 460800
 
 # Firmware path (no extension)

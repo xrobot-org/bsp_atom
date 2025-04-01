@@ -44,11 +44,11 @@ device_aliases:
   IMU_CS:
     type: GPIO
     aliases:
-    - IMU_CS
+    - icm42688_cs
   IMU_INT1:
     type: GPIO
     aliases:
-    - IMU_INT1
+    - icm42688_int
   BMI088_CS_1:
     type: GPIO
     aliases:
@@ -68,11 +68,11 @@ device_aliases:
   pwm_tim2_ch2:
     type: PWM
     aliases:
-    - pwm_tim2_ch2
+    - pwm_icm42688_heat
   spi1:
     type: SPI
     aliases:
-    - spi1
+    - spi_icm42688
   spi3:
     type: SPI
     aliases:
