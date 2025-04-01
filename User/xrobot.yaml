@@ -11,5 +11,42 @@ modules:
       x: 0.0
       y: 0.0
       z: 0.0
+    pid_param:
+      k: 0.025
+      p: 0.2
+      i: 0.01
+      d: 0.0
+      i_limit: 10.0
+      out_limit: 1.0
+      cycle: false
     gyro_topic_name: bmi088_gyro
     accl_topic_name: bmi088_accl
+    target_temperature: 45
+    task_stack_depth: 512
+- name: MadgwickAHRS
+  constructor_args:
+    beta: 0.033
+    gyro_topic_name: bmi088_gyro
+    accl_topic_name: bmi088_accl
+    quaternion_topic_name: ahrs_quaternion
+    euler_topic_name: ahrs_euler
+    task_stack_depth: 512
+- name: ICM42688
+  constructor_args:
+    rotation:
+      w: 1.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    pid_param:
+      k: 0.2
+      p: 1.0
+      i: 0.1
+      d: 0.0
+      i_limit: 3.0
+      out_limit: 1.0
+      cycle: false
+    gyro_topic_name: icm42688_gyro
+    accl_topic_name: icm42688_accl
+    target_temperature: 45.0
+    task_stack_depth: 512
