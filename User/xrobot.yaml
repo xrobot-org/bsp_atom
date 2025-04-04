@@ -6,6 +6,10 @@ modules:
     blink_cycle: 250
 - name: BMI088
   constructor_args:
+    gyro_freq: BMI088<HardwareContainer>::GyroFreq::GYRO_2000HZ_BW532HZ
+    accl_freq: BMI088<HardwareContainer>::AcclFreq::ACCL_1600HZ
+    gyro_scale: BMI088<HardwareContainer>::GyroRange::DEG_2000DPS
+    accl_scale: BMI088<HardwareContainer>::AcclRange::ACCL_24G
     rotation:
       w: 1.0
       x: 0.0
@@ -19,20 +23,15 @@ modules:
       i_limit: 10.0
       out_limit: 1.0
       cycle: false
-    gyro_topic_name: bmi088_gyro
-    accl_topic_name: bmi088_accl
+    gyro_topic_name: imu_gyro
+    accl_topic_name: imu_accl
     target_temperature: 45
-    task_stack_depth: 512
-- name: MadgwickAHRS
-  constructor_args:
-    beta: 0.033
-    gyro_topic_name: bmi088_gyro
-    accl_topic_name: bmi088_accl
-    quaternion_topic_name: ahrs_quaternion
-    euler_topic_name: ahrs_euler
-    task_stack_depth: 512
+    task_stack_depth: 256
 - name: ICM42688
   constructor_args:
+    datarate: ICM42688<HardwareContainer>::DataRate::DATA_RATE_1KHZ
+    accl_scale: ICM42688<HardwareContainer>::AcclRange::RANGE_4G
+    gyro_scale: ICM42688<HardwareContainer>::GyroRange::DPS_500
     rotation:
       w: 1.0
       x: 0.0
@@ -49,4 +48,20 @@ modules:
     gyro_topic_name: icm42688_gyro
     accl_topic_name: icm42688_accl
     target_temperature: 45.0
-    task_stack_depth: 512
+    task_stack_depth: 256
+- name: MadgwickAHRS
+  constructor_args:
+    beta: 0.05
+    gyro_topic_name: imu_gyro
+    accl_topic_name: imu_accl
+    quaternion_topic_name: ahrs_quaternion
+    euler_topic_name: ahrs_euler
+    task_stack_depth: 256
+- name: CanfdIMU
+  constructor_args:
+    accl_topic: imu_accl
+    gyro_topic: imu_gyro
+    quat_topic: ahrs_quaternion
+    eulr_topic: ahrs_euler
+    task_stack_depth_uart: 256
+    task_stack_depth_can: 256
