@@ -14,6 +14,7 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
 
+add_link_options(-Wl,-u,_printf_float)
 
 # Define the build type
 if(NOT CMAKE_BUILD_TYPE)
@@ -83,3 +84,33 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/LibXR.CMake)
 
 # Add XRobot Modules
 include(${CMAKE_CURRENT_LIST_DIR}/Modules/CMakeLists.txt)
+
+
+# Prints the section sizes
+function(print_section_sizes TARGET)
+  # Build Events command
+  add_custom_command(
+    TARGET ${TARGET}
+    POST_BUILD
+    COMMAND ${CMAKE_SIZE} ${TARGET})
+endfunction()
+
+# Creates output in hex format
+function(create_hex_output TARGET)
+  add_custom_target(
+    ${TARGET}.hex ALL
+    DEPENDS ${TARGET}
+    COMMAND ${CMAKE_OBJCOPY} --output-target ihex ${TARGET} ${TARGET}.hex)
+endfunction()
+
+# Creates output in binary format
+function(create_bin_output TARGET)
+  add_custom_target(
+    ${TARGET}.bin ALL
+    DEPENDS ${TARGET}
+    COMMAND ${CMAKE_OBJCOPY} --output-target binary --strip-all ${TARGET}
+            ${TARGET}.bin)
+endfunction()
+
+create_hex_output(${PROJECT_NAME})
+create_bin_output(${PROJECT_NAME})

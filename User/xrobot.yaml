@@ -6,10 +6,10 @@ modules:
     blink_cycle: 250
 - name: BMI088
   constructor_args:
-    gyro_freq: BMI088<HardwareContainer>::GyroFreq::GYRO_2000HZ_BW532HZ
-    accl_freq: BMI088<HardwareContainer>::AcclFreq::ACCL_1600HZ
-    gyro_scale: BMI088<HardwareContainer>::GyroRange::DEG_2000DPS
-    accl_scale: BMI088<HardwareContainer>::AcclRange::ACCL_24G
+    gyro_freq: BMI088::GyroFreq::GYRO_2000HZ_BW532HZ
+    accl_freq: BMI088::AcclFreq::ACCL_1600HZ
+    gyro_scale: BMI088::GyroRange::DEG_2000DPS
+    accl_scale: BMI088::AcclRange::ACCL_24G
     rotation:
       w: 1.0
       x: 0.0
@@ -29,9 +29,9 @@ modules:
     task_stack_depth: 256
 - name: ICM42688
   constructor_args:
-    datarate: ICM42688<HardwareContainer>::DataRate::DATA_RATE_1KHZ
-    accl_scale: ICM42688<HardwareContainer>::AcclRange::RANGE_4G
-    gyro_scale: ICM42688<HardwareContainer>::GyroRange::DPS_500
+    datarate: ICM42688::DataRate::DATA_RATE_1KHZ
+    accl_scale: ICM42688::AcclRange::RANGE_4G
+    gyro_scale: ICM42688::GyroRange::DPS_500
     rotation:
       w: 1.0
       x: 0.0

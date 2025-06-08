@@ -1,4 +1,5 @@
 #include "app_main.h"
+
 #include "libxr.hpp"
 #include "main.h"
 #include "stm32_adc.hpp"
@@ -12,8 +13,10 @@
 #include "stm32_timebase.hpp"
 #include "stm32_uart.hpp"
 #include "stm32_usb.hpp"
+#include "flash_map.hpp"
 #include "app_framework.hpp"
 #include "xrobot_main.hpp"
+
 
 using namespace LibXR;
 
@@ -68,73 +71,52 @@ extern "C" void app_main(void) {
   STM32SPI spi3(&hspi3, spi3_rx_buf, spi3_tx_buf, 3);
 
   STM32UART usart1(&huart1,
-              usart1_rx_buf, usart1_tx_buf, 5, 5);
+              usart1_rx_buf, usart1_tx_buf, 5);
 
   STM32UART usart2(&huart2,
-              usart2_rx_buf, usart2_tx_buf, 5, 5);
+              usart2_rx_buf, usart2_tx_buf, 5);
 
-  STM32CANFD fdcan1(&hfdcan1, "fdcan1", 5);
+  STM32CANFD fdcan1(&hfdcan1, 5);
 
-  STDIO::read_ = &usart2.read_port_;
-  STDIO::write_ = &usart2.write_port_;
+  STDIO::read_ = usart2.read_port_;
+  STDIO::write_ = usart2.write_port_;
   RamFS ramfs("XRobot");
   Terminal<32, 32, 5, 5> terminal(ramfs);
-  auto terminal_task = Timer::CreateTask(terminal.TaskFun, &terminal, 10);
-  Timer::Add(terminal_task);
-  Timer::Start(terminal_task);
+  LibXR::Thread term_thread;
+  term_thread.Create(&terminal, terminal.ThreadFun, "terminal", 4096,
+                     static_cast<LibXR::Thread::Priority>(3));
 
 
-  LibXR::HardwareContainer<
-    LibXR::Entry<LibXR::PowerManager>,
-    LibXR::Entry<LibXR::GPIO>,
-    LibXR::Entry<LibXR::GPIO>,
-    LibXR::Entry<LibXR::GPIO>,
-    LibXR::Entry<LibXR::GPIO>,
-    LibXR::Entry<LibXR::GPIO>,
-    LibXR::Entry<LibXR::GPIO>,
-    LibXR::Entry<LibXR::GPIO>,
-    LibXR::Entry<LibXR::PWM>,
-    LibXR::Entry<LibXR::PWM>,
-    LibXR::Entry<LibXR::SPI>,
-    LibXR::Entry<LibXR::SPI>,
-    LibXR::Entry<LibXR::UART>,
-    LibXR::Entry<LibXR::UART>,
-    LibXR::Entry<LibXR::FDCAN>,
-    LibXR::Entry<LibXR::RamFS>,
-    LibXR::Entry<LibXR::Terminal<32, 32, 5, 5>>
-  > peripherals{
-    {power_manager, {"power_manager"}},
-    {BMI088_CS_2, {"bmi088_gyro_cs"}},
-    {BMI088_INT_1, {"bmi088_accl_int"}},
-    {IMU_CS, {"icm42688_cs"}},
-    {IMU_INT1, {"icm42688_int"}},
-    {BMI088_CS_1, {"bmi088_accl_cs"}},
-    {BMI088_INT_2, {"bmi088_gyro_int"}},
-    {LED, {"LED"}},
-    {pwm_tim1_ch1, {"pwm_bmi088_heat"}},
-    {pwm_tim2_ch2, {"pwm_icm42688_heat"}},
-    {spi1, {"spi_icm42688"}},
-    {spi3, {"spi_bmi088"}},
-    {usart1, {"usart1"}},
-    {usart2, {"usart2"}},
-    {fdcan1, {"fdcan1"}},
-    {ramfs, {"ramfs"}},
-    {terminal, {"terminal"}}
+  LibXR::HardwareContainer peripherals{
+    LibXR::Entry<LibXR::PowerManager>({power_manager, {"power_manager"}}),
+    LibXR::Entry<LibXR::GPIO>({BMI088_CS_2, {"bmi088_gyro_cs"}}),
+    LibXR::Entry<LibXR::GPIO>({BMI088_INT_1, {"bmi088_accl_int"}}),
+    LibXR::Entry<LibXR::GPIO>({IMU_CS, {"icm42688_cs"}}),
+    LibXR::Entry<LibXR::GPIO>({IMU_INT1, {"icm42688_int"}}),
+    LibXR::Entry<LibXR::GPIO>({BMI088_CS_1, {"bmi088_accl_cs"}}),
+    LibXR::Entry<LibXR::GPIO>({BMI088_INT_2, {"bmi088_gyro_int"}}),
+    LibXR::Entry<LibXR::GPIO>({LED, {"LED"}}),
+    LibXR::Entry<LibXR::PWM>({pwm_tim1_ch1, {"pwm_bmi088_heat"}}),
+    LibXR::Entry<LibXR::PWM>({pwm_tim2_ch2, {"pwm_icm42688_heat"}}),
+    LibXR::Entry<LibXR::SPI>({spi1, {"spi_icm42688"}}),
+    LibXR::Entry<LibXR::SPI>({spi3, {"spi_bmi088"}}),
+    LibXR::Entry<LibXR::UART>({usart1, {"usart1"}}),
+    LibXR::Entry<LibXR::UART>({usart2, {"usart2"}}),
+    LibXR::Entry<LibXR::FDCAN>({fdcan1, {"fdcan1"}}),
+    LibXR::Entry<LibXR::RamFS>({ramfs, {"ramfs"}}),
+    LibXR::Entry<LibXR::Terminal<32, 32, 5, 5>>({terminal, {"terminal"}})
   };
 
   /* User Code Begin 3 */
-  auto power_cmd_file = LibXR::RamFS::CreateFile<STM32PowerManager *>(
+  auto power_cmd_file = LibXR::RamFS::CreateFile<STM32PowerManager*>(
       "power", STM32G4PowerFun, &power_manager);
 
   ramfs.Add(power_cmd_file);
 
-  STM32G4Flash flash(0x1F000,  // start_offset，对应 0x0801F000
-                     2048,     // min_erase_size，一页大小
-                     8         // min_write_size，双字（64位）
-  );
+  LibXR::STM32Flash<FLASH_SECTOR_NUMBER, FLASH_SECTOR_NUMBER - 1> flash(
+      FLASH_SECTORS);
 
   LibXR::DatabaseRawSequential database(flash, 256);
-
   peripherals.Register(LibXR::Entry<LibXR::Database>{database, {"database"}});
 
   XRobotMain(peripherals);
