@@ -13,6 +13,7 @@
 #include "stm32_timebase.hpp"
 #include "stm32_uart.hpp"
 #include "stm32_usb.hpp"
+#include "stm32_watchdog.hpp"
 #include "flash_map.hpp"
 #include "app_framework.hpp"
 #include "xrobot_main.hpp"
@@ -62,9 +63,9 @@ extern "C" void app_main(void) {
   STM32GPIO LED(LED_GPIO_Port, LED_Pin);
 
 
-  STM32PWM pwm_tim1_ch1(&htim1, TIM_CHANNEL_1);
+  STM32PWM pwm_tim1_ch1(&htim1, TIM_CHANNEL_1, false);
 
-  STM32PWM pwm_tim2_ch2(&htim2, TIM_CHANNEL_2);
+  STM32PWM pwm_tim2_ch2(&htim2, TIM_CHANNEL_2, false);
 
   STM32SPI spi1(&hspi1, spi1_rx_buf, spi1_tx_buf, 3);
 
