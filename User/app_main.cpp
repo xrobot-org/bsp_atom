@@ -84,7 +84,7 @@ extern "C" void app_main(void) {
   RamFS ramfs("XRobot");
   Terminal<32, 32, 5, 5> terminal(ramfs);
   LibXR::Thread term_thread;
-  term_thread.Create(&terminal, terminal.ThreadFun, "terminal", 4096,
+  term_thread.Create(&terminal, terminal.ThreadFun, "terminal", 1024,
                      static_cast<LibXR::Thread::Priority>(3));
 
 
