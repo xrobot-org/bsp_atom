@@ -84,7 +84,7 @@ extern "C" void app_main(void) {
   RamFS ramfs("XRobot");
   Terminal<32, 32, 5, 5> terminal(ramfs);
   LibXR::Thread term_thread;
-  term_thread.Create(&terminal, terminal.ThreadFun, "terminal", 1024,
+  term_thread.Create(&terminal, terminal.ThreadFun, "terminal", 4096,
                      static_cast<LibXR::Thread::Priority>(3));
 
 
@@ -114,8 +114,7 @@ extern "C" void app_main(void) {
 
   ramfs.Add(power_cmd_file);
 
-  LibXR::STM32Flash<FLASH_SECTOR_NUMBER, FLASH_SECTOR_NUMBER - 1> flash(
-      FLASH_SECTORS);
+  LibXR::STM32Flash flash(FLASH_SECTORS, FLASH_SECTOR_NUMBER);
 
   LibXR::DatabaseRawSequential database(flash, 256);
   peripherals.Register(LibXR::Entry<LibXR::Database>{database, {"database"}});
