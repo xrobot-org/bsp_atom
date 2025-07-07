@@ -59,9 +59,6 @@ extern void STM32_USB_ISR_Handler_F1(void);
 #ifdef HAL_UART_MODULE_ENABLED
 extern void STM32_UART_ISR_Handler_IDLE(UART_HandleTypeDef *huart);
 #endif
-#ifdef HAL_UART_MODULE_ENABLED
-extern void STM32_UART_ISR_Handler_IDLE(UART_HandleTypeDef *huart);
-#endif
 
 /* USER CODE END 0 */
 
@@ -385,15 +382,14 @@ void SPI1_IRQHandler(void)
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
-
-  /* USER CODE END USART1_IRQn 0 */
-  HAL_UART_IRQHandler(&huart1);
-  /* USER CODE BEGIN USART1_IRQn 1 */
   /* LibXR UART IDLE callback (Auto-generated) */
 #ifdef HAL_UART_MODULE_ENABLED
   STM32_UART_ISR_Handler_IDLE(&huart1);
 #endif
-  STM32_UART_ISR_Handler_IDLE(&huart1);
+
+  /* USER CODE END USART1_IRQn 0 */
+  HAL_UART_IRQHandler(&huart1);
+  /* USER CODE BEGIN USART1_IRQn 1 */
 
   /* USER CODE END USART1_IRQn 1 */
 }
@@ -404,15 +400,15 @@ void USART1_IRQHandler(void)
 void USART2_IRQHandler(void)
 {
   /* USER CODE BEGIN USART2_IRQn 0 */
-
-  /* USER CODE END USART2_IRQn 0 */
-  HAL_UART_IRQHandler(&huart2);
-  /* USER CODE BEGIN USART2_IRQn 1 */
   /* LibXR UART IDLE callback (Auto-generated) */
 #ifdef HAL_UART_MODULE_ENABLED
   STM32_UART_ISR_Handler_IDLE(&huart2);
 #endif
-  STM32_UART_ISR_Handler_IDLE(&huart2);
+
+  /* USER CODE END USART2_IRQn 0 */
+  HAL_UART_IRQHandler(&huart2);
+  /* USER CODE BEGIN USART2_IRQn 1 */
+
 
   /* USER CODE END USART2_IRQn 1 */
 }

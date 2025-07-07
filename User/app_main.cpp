@@ -5,6 +5,7 @@
 #include "stm32_adc.hpp"
 #include "stm32_can.hpp"
 #include "stm32_canfd.hpp"
+#include "stm32_dac.hpp"
 #include "stm32_gpio.hpp"
 #include "stm32_i2c.hpp"
 #include "stm32_power.hpp"

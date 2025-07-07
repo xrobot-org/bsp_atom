@@ -19,7 +19,6 @@
     },
     "editor.trimAutoWhitespace": true,
     "editor.formatOnPaste": true,
-    "editor.formatOnSave": true,
     "editor.inlineSuggest.enabled": true,
     "editor.parameterHints.enabled": true,
     "editor.snippetSuggestions": "bottom",
