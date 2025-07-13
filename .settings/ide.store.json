@@ -1,0 +1,4 @@
+{
+  "device": "STM32G431KBU6",
+  "toolchain": "CLANG"
+}
