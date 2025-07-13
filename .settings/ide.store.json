@@ -1,4 +1,6 @@
 {
   "device": "STM32G431KBU6",
-  "toolchain": "CLANG"
+  "toolchain": "CLANG",
+  "core": "Cortex-M4",
+  "order": 0
 }
