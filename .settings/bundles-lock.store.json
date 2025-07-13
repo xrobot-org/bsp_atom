@@ -195,11 +195,11 @@
       "selected_by": [
         {
           "name": "st-arm-clang",
-          "version": ">=19.1.6+st.1 <19.1.6+st.99999"
+          "version": "19.1.6+st.8"
         },
         {
           "name": "st-arm-clang",
-          "version": "^19.1.6+st.8"
+          "version": ">=19.1.6+st.1 <19.1.6+st.99999"
         }
       ]
     },
@@ -210,11 +210,11 @@
       "selected_by": [
         {
           "name": "st-arm-clang",
-          "version": ">=19.1.6+st.1 <19.1.6+st.99999"
+          "version": "19.1.6+st.8"
         },
         {
           "name": "st-arm-clang",
-          "version": "^19.1.6+st.8"
+          "version": ">=19.1.6+st.1 <19.1.6+st.99999"
         }
       ]
     },
@@ -225,11 +225,11 @@
       "selected_by": [
         {
           "name": "st-arm-clang",
-          "version": ">=19.1.6+st.1 <19.1.6+st.99999"
+          "version": "19.1.6+st.8"
         },
         {
           "name": "st-arm-clang",
-          "version": "^19.1.6+st.8"
+          "version": ">=19.1.6+st.1 <19.1.6+st.99999"
         }
       ]
     },
@@ -240,11 +240,11 @@
       "selected_by": [
         {
           "name": "st-arm-clang",
-          "version": ">=19.1.6+st.1 <19.1.6+st.99999"
+          "version": "19.1.6+st.8"
         },
         {
           "name": "st-arm-clang",
-          "version": "^19.1.6+st.8"
+          "version": ">=19.1.6+st.1 <19.1.6+st.99999"
         }
       ]
     },
