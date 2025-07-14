@@ -47,7 +47,7 @@ static uint8_t usart2_rx_buf[128];
 
 extern "C" void app_main(void) {
   /* User Code Begin 2 */
-
+  
   /* User Code End 2 */
   STM32TimerTimebase timebase(&htim3);
   PlatformInit(2, 512);
